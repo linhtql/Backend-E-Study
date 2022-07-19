@@ -1,18 +1,15 @@
 package com.estudy.controller;
 
-import com.estudy.entities.Course;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(path = "/api/v1/Courses")
-public class CourseController {
+@RequestMapping(path = "/abc")
+public class HomeController {
 
-//    @GetMapping("")
-//    List<Course> getAllCourses() {
-//
-//    }
+    @GetMapping("/index")
+    public String index(){
+        return "only logged";
+    }
 }
