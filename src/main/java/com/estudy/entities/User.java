@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,7 +44,7 @@ public class User extends BaseEntity{
     private String avatar;
 
     @Column(name = "role_id")
-    private Long roleId;
+    private Long roleId = 1L;
 
     @Column(name = "createdDate")
     private Date createdDate;
