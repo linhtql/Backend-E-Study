@@ -79,7 +79,7 @@ public class UserService implements IUserService, UserDetailsService {
             user1.setEmail(registerForm.getEmail());
             user1.setAddress(registerForm.getAddress());
             String avatar;
-            if(registerForm.getAvatar().isEmpty()) {
+            if( registerForm.getAvatar() ==  null || registerForm.getAvatar().isEmpty()) {
                 avatar = "https://res.cloudinary.com/dxultkptn/image/upload/v1658150890/default_nbaeby.jpg";
             }else {
                 avatar = storageService.storageFile(registerForm.getAvatar());
