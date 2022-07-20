@@ -9,4 +9,5 @@ public interface IUserService {
     UserDetails loadUserById(long id);
     UserInfo getByUserName(String username);
     UserInfo register(RegisterForm registerForm);
+    UserInfo information(long id);
 }

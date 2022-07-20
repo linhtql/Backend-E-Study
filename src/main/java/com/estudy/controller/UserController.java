@@ -48,7 +48,6 @@ public class UserController {
     }
 
 
-
      @PostMapping("/auth/signup")
     public ResponseEntity<ResponseObject> register(@ModelAttribute RegisterForm registerForm) {
         UserInfo userInfo = userService.register(registerForm);
@@ -63,6 +62,26 @@ public class UserController {
             );
         }
      }
+
+     //get detail user
+    @GetMapping("/{id}")
+    ResponseEntity<ResponseObject> findById(@PathVariable long id) {
+        UserInfo userInfo = userService.information(id);
+
+        if(userInfo != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Query user successfully", userInfo)
+            );
+
+        }else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Query user fail", "")
+            );
+        }
+
+    }
+
+
 
 
 

@@ -16,9 +16,11 @@ public class UserInfo {
     private String username;
     private String password;
     private Date birthOfDate;
+    private String dateCreated;
     private String phone;
     private String email;
     private String address;
     private String avatar;
     private String token;
+    private String role;
 }

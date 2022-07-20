@@ -1,5 +1,6 @@
 package com.estudy.service.impl;
 
+import com.estudy.config.TimeConfig;
 import com.estudy.entities.User;
 import com.estudy.form.RegisterForm;
 import com.estudy.model.UserInfo;
@@ -99,14 +100,36 @@ public class UserService implements IUserService, UserDetailsService {
             userInfo.setAvatar(user.getAvatar());
 
 
-
-
             return userInfo;
 
 
         }
         else {
             return null;
+        }
+
+    }
+
+    @Override
+    public UserInfo information(long id) {
+        User user = userRepository.findById(id);
+        if(user == null) {
+            return null;
+        }else {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setId(user.getId());
+            userInfo.setFirstName(user.getFirstName());
+            userInfo.setLastName(user.getLastName());
+            userInfo.setBirthOfDate(user.getBirthOfDate());
+            userInfo.setPhone(user.getPhone());
+            userInfo.setEmail(user.getEmail());
+            userInfo.setAddress(user.getAddress());
+            userInfo.setAvatar(user.getAvatar());
+            userInfo.setDateCreated(TimeConfig.getTime(user.getCreatedDate()));
+            userInfo.setRole(user.getRole().getName());
+
+            return userInfo;
+
         }
 
     }
