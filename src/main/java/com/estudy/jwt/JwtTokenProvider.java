@@ -3,6 +3,7 @@ package com.estudy.jwt;
 import com.estudy.utils.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -10,7 +11,9 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-    private final String JWT_SECRET = "linhtql";
+
+    @Value("${application.security.secret-key}")
+    private  String jwt_secret ;
     private final long JWT_EXPIRATION = 6*30*24*60*60*100L;
 
     public String generateToken(CustomUserDetails customUserDetails) {
@@ -21,13 +24,13 @@ public class JwtTokenProvider {
                 .setSubject(Long.toString(customUserDetails.getUser().getId()))
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, jwt_secret)
                 .compact();
     }
 
     public Long getUserIdFromJWT(String token){
         Claims claims = Jwts.parser()
-                .setSigningKey(JWT_SECRET)
+                .setSigningKey(jwt_secret)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -36,7 +39,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwt_secret).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
