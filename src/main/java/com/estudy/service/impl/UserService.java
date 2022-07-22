@@ -70,6 +70,7 @@ public class UserService implements IUserService, UserDetailsService {
         UserInfo userInfo = new UserInfo();
         User user1 = userRepository.findByUsername(registerForm.getUsername());
         if(user1 == null ) {
+        	System.out.println("da vao null");
             user1 = new User();
             user1.setFirstName(registerForm.getFirstName());
             user1.setLastName(registerForm.getLastName());

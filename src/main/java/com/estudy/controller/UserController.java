@@ -20,70 +20,54 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api/v1")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
+	@Autowired
+	JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-    @PostMapping("/auth/signin")
-    public ResponseEntity<ResponseObject> login(@RequestBody LoginForm loginForm){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginForm.getUsername(), loginForm.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+	@PostMapping("/auth/signin")
+	public ResponseEntity<ResponseObject> login(@RequestBody LoginForm loginForm) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        UserInfo userInfo = userService.getByUserName(loginForm.getUsername());
-        System.out.println(loginForm.getUsername());
-        userInfo.setToken(token);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Login successfully !", userInfo)
-        );
-    }
+		String token = jwtTokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+		UserInfo userInfo = userService.getByUserName(loginForm.getUsername());
+		System.out.println(loginForm.getUsername());
+		userInfo.setToken(token);
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Login successfully !", userInfo));
+	}
 
+	@PostMapping("/auth/signup")
+	public ResponseEntity<ResponseObject> register(@ModelAttribute RegisterForm registerForm) {
+		UserInfo userInfo = userService.register(registerForm);
+		if (userInfo != null) {
 
-     @PostMapping("/auth/signup")
-    public ResponseEntity<ResponseObject> register(@ModelAttribute RegisterForm registerForm) {
-        UserInfo userInfo = userService.register(registerForm);
-        if(userInfo != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseObject("ok", "Register successfully", userInfo));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+					.body(new ResponseObject("failed", "Register failed !", ""));
+		}
+	}
 
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Register successfully", userInfo)
-            );
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("failed", "Register failed !", "")
-            );
-        }
-     }
+	// get detail user
+	@GetMapping("/{id}")
+	ResponseEntity<ResponseObject> findById(@PathVariable long id) {
+		UserInfo userInfo = userService.information(id);
 
-     //get detail user
-    @GetMapping("/{id}")
-    ResponseEntity<ResponseObject> findById(@PathVariable long id) {
-        UserInfo userInfo = userService.information(id);
+		if (userInfo != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseObject("ok", "Query user successfully", userInfo));
 
-        if(userInfo != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Query user successfully", userInfo)
-            );
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("failed", "Query user fail", ""));
+		}
 
-        }else {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("failed", "Query user fail", "")
-            );
-        }
-
-    }
-
-
-
-
-
+	}
 
 }
