@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,22 +13,24 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends BaseEntity{
+public class Category extends BaseEntity {
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "avatar")
+	private String avatar;
 
-    @OneToMany(mappedBy = "category")
-    private List<Course> courses;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "createdDate")
-    private Date createdDate;
+	@OneToMany(mappedBy = "category")
+	private List<Course> courses;
 
-    @Column(name = "modifiedDate")
-    private Date modifiedDate;
+	@Column(name = "createdDate")
+	private Date createdDate;
 
+	@Column(name = "modifiedDate")
+	private Date modifiedDate;
 
 }

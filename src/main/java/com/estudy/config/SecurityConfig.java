@@ -1,5 +1,6 @@
 package com.estudy.config;
 
+import com.estudy.entities.Role;
 import com.estudy.jwt.JwtAuthenticationFilter;
 import com.estudy.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -23,36 +23,31 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
 
+	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		// Get AuthenticationManager bean
+		return super.authenticationManagerBean();
+	}
 
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        // Get AuthenticationManager bean
-        return super.authenticationManagerBean();
-    }
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable();
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
 
         // Set session management to stateless
         http = http
@@ -77,15 +72,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests()
                 //public endpoints
-                .antMatchers("/api/public/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1//category/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1//course/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/category/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/user/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/course/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/course/search").permitAll()
                 .antMatchers("/api/v1/auth/**","/")
                 .permitAll()
 
                 //private endpoints
-                .antMatchers("/api/v1/user/**").hasRole("ADMIN")
+//                .antMatchers("/api/v1/user/**").hasAuthority("ADMIN")
+//                .antMatchers("/api/v1/category/**").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated();
 
@@ -107,5 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
+	}
 
-}
+
+

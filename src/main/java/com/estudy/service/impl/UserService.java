@@ -2,6 +2,7 @@ package com.estudy.service.impl;
 
 import com.estudy.config.TimeConfig;
 import com.estudy.entities.User;
+import com.estudy.form.EditUserForm;
 import com.estudy.form.RegisterForm;
 import com.estudy.model.UserInfo;
 import com.estudy.repository.UserRepository;
@@ -67,9 +68,9 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public UserInfo register(RegisterForm registerForm) {
-        UserInfo userInfo = new UserInfo();
         User user1 = userRepository.findByUsername(registerForm.getUsername());
         if(user1 == null ) {
+        	System.out.println("da vao null");
             user1 = new User();
             user1.setFirstName(registerForm.getFirstName());
             user1.setLastName(registerForm.getLastName());
@@ -89,15 +90,7 @@ public class UserService implements IUserService, UserDetailsService {
             user1.setCreatedDate(new Date());
 
             User user = userRepository.save(user1);
-
-            userInfo.setId(user.getId());
-            userInfo.setFirstName(user.getFirstName());
-            userInfo.setLastName(user.getLastName());
-            userInfo.setBirthOfDate(user.getBirthOfDate());
-            userInfo.setPhone(user.getPhone());
-            userInfo.setEmail(user.getEmail());
-            userInfo.setAddress(user.getAddress());
-            userInfo.setAvatar(user.getAvatar());
+            UserInfo userInfo = information(user.getId());
 
 
             return userInfo;
@@ -126,11 +119,59 @@ public class UserService implements IUserService, UserDetailsService {
             userInfo.setAddress(user.getAddress());
             userInfo.setAvatar(user.getAvatar());
             userInfo.setDateCreated(TimeConfig.getTime(user.getCreatedDate()));
-            userInfo.setRole(user.getRole().getName());
 
             return userInfo;
 
         }
 
     }
+
+    @Override
+    public UserInfo updateUser(RegisterForm registerForm, Long id) {
+
+
+        User oldUser = userRepository.findOneById(id);
+        if(oldUser != null) {
+            oldUser.setFirstName(registerForm.getFirstName());
+            oldUser.setLastName(registerForm.getLastName());
+            oldUser.setBirthOfDate(registerForm.getBirthOfDate());
+            oldUser.setPhone(registerForm.getPhone());
+            oldUser.setEmail(registerForm.getEmail());
+            oldUser.setAddress(registerForm.getAddress());
+            String avatar;
+            if (registerForm.getAvatar().isEmpty()) {
+                avatar = oldUser.getAvatar();
+            } else {
+                avatar = storageService.storageFile(registerForm.getAvatar());
+
+            }
+            oldUser.setAvatar(avatar);
+            oldUser.setModifiedDate(new Date());
+            oldUser.setRoleId(registerForm.getRoleId());
+
+            User user = userRepository.save(oldUser);
+
+            UserInfo userInfo =  information(user.getId());
+
+
+            return userInfo;
+        }
+        return null;
+    }
+
+    @Override
+    public UserInfo editUser(EditUserForm editUserForm, Long id) {
+        User oldUser = userRepository.findOneById(id);
+        if(oldUser != null) {
+            oldUser.setActive(editUserForm.isActive());
+            oldUser.setRoleId(editUserForm.getRoleId());
+            User user = userRepository.save(oldUser);
+
+            UserInfo userInfo =  information(user.getId());
+            return userInfo;
+        }
+        return null;
+    }
+
+
 }
