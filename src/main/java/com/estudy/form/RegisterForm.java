@@ -1,5 +1,6 @@
 package com.estudy.form;
 
+import com.estudy.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,7 @@ public class RegisterForm {
     private String email;
     private String address;
     private MultipartFile avatar;
+    private boolean active;
+    private Long roleId;
+
 }
