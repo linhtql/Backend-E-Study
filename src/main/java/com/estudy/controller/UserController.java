@@ -66,7 +66,7 @@ public class UserController {
      }
 
      //get detail user
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     ResponseEntity<ResponseObject> findById(@PathVariable long id) {
         UserInfo userInfo = userService.information(id);
 
