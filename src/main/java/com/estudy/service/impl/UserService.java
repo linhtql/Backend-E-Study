@@ -109,6 +109,7 @@ public class UserService implements IUserService, UserDetailsService {
             userInfo.setLastName(user.getLastName());
             userInfo.setBirthOfDate(user.getBirthOfDate());
             userInfo.setPhone(user.getPhone());
+            userInfo.setUsername(user.getUsername());
             userInfo.setEmail(user.getEmail());
             userInfo.setAddress(user.getAddress());
             userInfo.setAvatar(user.getAvatar());
@@ -131,8 +132,9 @@ public class UserService implements IUserService, UserDetailsService {
             oldUser.setPhone(registerForm.getPhone());
             oldUser.setEmail(registerForm.getEmail());
             oldUser.setAddress(registerForm.getAddress());
+
             String avatar;
-            if (registerForm.getAvatar().isEmpty()) {
+            if (registerForm.getAvatar() == null || registerForm.getAvatar().isEmpty()) {
                 avatar = oldUser.getAvatar();
             } else {
                 avatar = storageService.storageFile(registerForm.getAvatar());
@@ -140,7 +142,6 @@ public class UserService implements IUserService, UserDetailsService {
             }
             oldUser.setAvatar(avatar);
             oldUser.setModifiedDate(new Date());
-            oldUser.setRoleId(registerForm.getRoleId());
 
             User user = userRepository.save(oldUser);
 
