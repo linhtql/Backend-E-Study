@@ -1,6 +1,5 @@
 package com.estudy.form;
 
-import com.estudy.entities.Role;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;

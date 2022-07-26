@@ -13,8 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntity{
-
+public class User extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
@@ -56,7 +55,7 @@ public class User extends BaseEntity{
     private boolean active = true;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", insertable=false, updatable=false)
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
