@@ -16,6 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class Role extends BaseEntity{
 
+    public static final String AUTHOR_ADMIN = "ROLE_ADMIN";
+    public static final String AUTHOR_USER = "USER";
+    public static final String AUTHOR_INSTRUCTOR = "INSTRUCTOR";
+
 
     @Column(name = "role_name")
     private String name;

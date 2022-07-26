@@ -1,23 +1,29 @@
 package com.estudy.controller;
 
 import com.estudy.entities.ResponseObject;
+import com.estudy.entities.User;
+import com.estudy.form.EditUserForm;
 import com.estudy.form.LoginForm;
 import com.estudy.form.RegisterForm;
 import com.estudy.jwt.JwtTokenProvider;
 import com.estudy.model.UserInfo;
 import com.estudy.service.impl.UserService;
 import com.estudy.utils.CustomUserDetails;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v1")
+@Api(tags = "users")
 public class UserController {
 
 	@Autowired
@@ -42,32 +48,98 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "Login successfully !", userInfo));
 	}
 
-	@PostMapping("/auth/signup")
-	public ResponseEntity<ResponseObject> register(@ModelAttribute RegisterForm registerForm) {
-		UserInfo userInfo = userService.register(registerForm);
-		if (userInfo != null) {
 
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("ok", "Register successfully", userInfo));
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-					.body(new ResponseObject("failed", "Register failed !", ""));
-		}
-	}
+     @PostMapping("/auth/signup")
+    public ResponseEntity<ResponseObject> register(@ModelAttribute RegisterForm registerForm) {
+        UserInfo userInfo = userService.register(registerForm);
+        if(userInfo != null) {
 
-	// get detail user
-	@GetMapping("/{id}")
-	ResponseEntity<ResponseObject> findById(@PathVariable long id) {
-		UserInfo userInfo = userService.information(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Register successfully", userInfo)
+            );
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("failed", "Register failed !", "")
+            );
+        }
+     }
 
-		if (userInfo != null) {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("ok", "Query user successfully", userInfo));
+    @GetMapping("/user/me")
+    ResponseEntity<ResponseObject> loadByToken() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
 
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("failed", "Query user fail", ""));
-		}
+        UserInfo userInfo = userService.getByUserName(username);
 
-	}
+        if (userInfo != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Query user successfully", userInfo));
 
-}
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Query user fail", ""));
+        }
+    }
+
+     //get detail user
+    @GetMapping("/user/{id}")
+    ResponseEntity<ResponseObject> findById(@PathVariable long id) {
+        UserInfo userInfo = userService.information(id);
+
+        if(userInfo != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Query user successfully", userInfo)
+            );
+
+        }else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Query user fail", "")
+            );
+        }
+
+    }
+
+    //edit user
+    @PutMapping("/user/{id}")
+    ResponseEntity<ResponseObject> updateUser(@ModelAttribute RegisterForm registerForm, @PathVariable long id) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        UserInfo userInfo = userService.getByUserName(username);
+
+        if (userInfo.getId() == id) {
+            UserInfo userInfo1 = userService.updateUser(registerForm, id);
+            if (userInfo != null) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseObject("ok", "Update user successfully", userInfo1));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                        .body(new ResponseObject("failed", "Update user failed !", ""));
+            }
+
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                    .body(new ResponseObject("failed", "Update user failed !", "no permission"));
+        }
+
+
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/user/{id}")
+    ResponseEntity<ResponseObject> editUser(@ModelAttribute EditUserForm editUserForm, @PathVariable long id) {
+        UserInfo userInfo = userService.editUser(editUserForm, id);
+        if (userInfo != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject("ok", "Edit user successfully", userInfo));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                    .body(new ResponseObject("failed", "Edit user failed !", ""));
+        }
+    }
+
+    }
+
+
+
+
+

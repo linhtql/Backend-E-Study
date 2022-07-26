@@ -23,4 +23,5 @@ public class UserInfo {
     private String avatar;
     private String token;
     private String role;
+    private boolean active;
 }

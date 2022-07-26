@@ -109,27 +109,26 @@ public class CommentService implements ICommentService {
 
 	@Override
 	public PaginationCommentInfo getAllOrPagination(Boolean p, Long courseId) {
-//		if (!p) {
-//
-//			List<Comment> listComment = commentRepository.findAllByCourseId(courseId);
-//			if (listComment != null) {
-//
-//				PaginationCommentInfo paginationComment = new PaginationCommentInfo();
-//				paginationComment.setContent(commentConvert.toListModel(listComment));
-//				paginationComment.setTotalPages(1);
-//				paginationComment.setTotalElements(listComment.size());
-//				paginationComment.setCurrentPage(1);
-//
-//				return paginationComment;
-//
-//			} else {
-//				return null;
-//			}
-//
-//		} else {
-//			return null;
-//		}
-		return null;
+		if (!p) {
+
+			List<Comment> listComment = commentRepository.findAllByCourseId(courseId);
+			if (listComment != null) {
+
+				PaginationCommentInfo paginationComment = new PaginationCommentInfo();
+				paginationComment.setContent(commentConvert.toListModel(listComment));
+				paginationComment.setTotalPages(1);
+				paginationComment.setTotalElements(listComment.size());
+				paginationComment.setCurrentPage(1);
+
+				return paginationComment;
+
+			} else {
+				return null;
+			}
+
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -148,14 +147,12 @@ public class CommentService implements ICommentService {
 
 			Integer start = (current_page - 1) * limit;
 
-			Pageable pageable = PageRequest.of(0, 1);
-			List<Comment> resuft = commentRepository.findAllByCourseId(pageable);
+			System.out.println(courseId + ", " + start + ", " + limit);
+			List<Comment> resuft = commentRepository.findAllByCourseIdAndLimit(courseId, start, limit);
 
 			System.out.println(resuft);
 
-//			paginationComment.setContent(commentConvert.toListModel(resuft));
-
-			return paginationComment;
+			return null;
 
 		} else {
 			return null;

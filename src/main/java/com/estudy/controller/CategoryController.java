@@ -1,7 +1,9 @@
 package com.estudy.controller;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
+import com.estudy.entities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,48 +43,51 @@ public class CategoryController {
 	@GetMapping
 	public ResponseEntity<ResponseObject> getAllCategory() {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponseObject("ok", "Get all category succesfully", categoryService.getAll()));
+				.body(new ResponseObject("ok", "Get all category successfully", categoryService.getAll()));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ResponseObject> getOneCategory(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponseObject("ok", "Get one category by id succesfully", categoryService.getOneCategory(id)));
+				new ResponseObject("ok", "Get one category by id successfully", categoryService.getOneCategory(id)));
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<ResponseObject> create(@ModelAttribute CategoryForm categoryForm) {
-		CategoryInfo catogryInfo = categoryService.create(categoryForm);
+		CategoryInfo categoryInfo = categoryService.create(categoryForm);
 
-		if (catogryInfo != null) {
+		if (categoryInfo != null) {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("ok", "Create category successfully", catogryInfo));
+					.body(new ResponseObject("ok", "Create category successfully", categoryInfo));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 					.body(new ResponseObject("failed", "Create category failed !", "Category already exists"));
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<ResponseObject> update(@ModelAttribute CategoryForm categoryForm, @PathVariable Long id) {
-		CategoryInfo catogryInfo = categoryService.update(categoryForm, id);
+		CategoryInfo categoryInfo = categoryService.update(categoryForm, id);
 
-		if (catogryInfo != null) {
+		if (categoryInfo != null) {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("ok", "Update category successfully", catogryInfo));
+					.body(new ResponseObject("ok", "Update category successfully", categoryInfo));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 					.body(new ResponseObject("failed", "Update category failed !", "Category already exists"));
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ResponseObject> delete(@PathVariable Long id) {
-		CategoryInfo catogryInfo = categoryService.delete(id);
+		CategoryInfo categoryInfo = categoryService.delete(id);
 
-		if (catogryInfo != null) {
+		if (categoryInfo != null) {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("ok", "Delete category successfully", catogryInfo));
+					.body(new ResponseObject("ok", "Delete category successfully", categoryInfo));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 					.body(new ResponseObject("failed", "Delete category failed !", "Category already exists"));

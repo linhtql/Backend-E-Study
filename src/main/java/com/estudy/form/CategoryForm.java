@@ -1,5 +1,6 @@
 package com.estudy.form;
 
+import com.estudy.entities.Role;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryForm {
-	private Long id;
 	private String name;
 	private MultipartFile avatar;
 	private String description;
