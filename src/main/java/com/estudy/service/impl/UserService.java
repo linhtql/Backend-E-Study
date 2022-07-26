@@ -1,14 +1,7 @@
 package com.estudy.service.impl;
 
-import com.estudy.config.TimeConfig;
-import com.estudy.entities.Course;
-import com.estudy.entities.User;
-import com.estudy.form.EditUserForm;
-import com.estudy.form.RegisterForm;
-import com.estudy.model.UserInfo;
-import com.estudy.repository.UserRepository;
-import com.estudy.service.IUserService;
-import com.estudy.utils.CustomUserDetails;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +9,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import com.estudy.config.TimeConfig;
+import com.estudy.entities.User;
+import com.estudy.form.EditUserForm;
+import com.estudy.form.RegisterForm;
+import com.estudy.model.UserInfo;
+import com.estudy.repository.UserRepository;
+import com.estudy.service.IUserService;
+import com.estudy.utils.CustomUserDetails;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {

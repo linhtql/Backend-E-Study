@@ -109,20 +109,19 @@ public class UserController {
         String username = ((UserDetails) principal).getUsername();
         UserInfo userInfo = userService.getByUserName(username);
 
-        if (userInfo.getId() == id) {
-            UserInfo userInfo1 = userService.updateUser(registerForm, id);
-            if (userInfo != null) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ResponseObject("ok", "Update user successfully", userInfo1));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-                        .body(new ResponseObject("failed", "Update user failed !", ""));
-            }
-
-        } else {
+        if (userInfo.getId() != id) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
                     .body(new ResponseObject("failed", "Update user failed !", "no permission"));
         }
+
+        UserInfo userInfoUpdate = userService.updateUser(registerForm, id);
+        if (userInfoUpdate == null) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                    .body(new ResponseObject("failed", "Update user failed !", ""));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseObject("ok", "Update user successfully", userInfoUpdate));
 
     }
 

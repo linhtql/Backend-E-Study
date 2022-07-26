@@ -1,18 +1,19 @@
 package com.estudy.service.impl;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.estudy.service.IStorageService;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.estudy.service.IStorageService;
 
 @Service
 public class StorageService implements IStorageService {
@@ -26,25 +27,22 @@ public class StorageService implements IStorageService {
             File uploadedFile = convertMultiPartToFile(file);
             Map uploadResult = cloudinary.uploader().uploadLarge(uploadedFile, ObjectUtils.emptyMap());
             boolean isDeleted = uploadedFile.delete();
-            if (isDeleted){
+            if (isDeleted) {
                 System.out.println("File successfully deleted");
-            }else
+            } else
                 System.out.println("File doesn't exist");
-            return  uploadResult.get("url").toString();
+            return uploadResult.get("url").toString();
 
-
-
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-     catch (Exception e) {
-        throw new RuntimeException(e);
-    }
     }
 
     public File convertMultiPartToFile(MultipartFile file) throws IOException {
 
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
         String generatedFileName = UUID.randomUUID().toString().replace("-", "");
-        generatedFileName= generatedFileName+"."+fileExtension;
+        generatedFileName = generatedFileName + "." + fileExtension;
         File convFile = new File(generatedFileName);
 
         FileOutputStream fos = new FileOutputStream(convFile);

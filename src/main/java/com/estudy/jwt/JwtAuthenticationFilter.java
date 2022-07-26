@@ -17,9 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.estudy.service.impl.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
