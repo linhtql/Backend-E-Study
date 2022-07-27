@@ -1,11 +1,19 @@
 package com.estudy.service.impl;
 
+import java.net.http.HttpRequest;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.estudy.convert.CommentConvert;
@@ -16,12 +24,16 @@ import com.estudy.jwt.JwtAuthenticationFilter;
 import com.estudy.jwt.JwtTokenProvider;
 import com.estudy.model.CommentInfo;
 import com.estudy.model.PaginationCommentInfo;
+import com.estudy.repository.CategoryRepository;
 import com.estudy.repository.CommentReponsitory;
 import com.estudy.repository.UserRepository;
 import com.estudy.service.ICommentService;
 
 @Service
 public class CommentService implements ICommentService {
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	UserRepository userRepository;
@@ -127,29 +139,38 @@ public class CommentService implements ICommentService {
 	@Override
 	public PaginationCommentInfo getAllOrPagination(Boolean p, Long courseId, Integer current_page, Integer limit,
 			String sort) {
-		if (p) {
-			PaginationCommentInfo paginationComment = new PaginationCommentInfo();
-			Integer total_record = commentRepository.countByCourseId(courseId);
-			Integer totalPage = (int) Math.ceil(total_record / limit);
+		try {
+			if (p) {
+				PaginationCommentInfo paginationComment = new PaginationCommentInfo();
+				Integer total_record = commentRepository.countByCourseId(courseId);
+				Integer totalPage = (int) Math.ceil(total_record / limit);
 
-			if (current_page > totalPage) {
-				current_page = totalPage;
-			} else if (current_page < 1) {
-				current_page = 1;
+				if (current_page > totalPage) {
+					current_page = totalPage;
+				} else if (current_page < 1) {
+					current_page = 1;
+				}
+
+				Integer start = (current_page - 1) * limit;
+
+				System.out.println(courseId + ", " + start + ", " + limit);
+				List<Comment> resuft = commentRepository.findAllByCourseIdParamsNative(courseId, start, limit);
+
+				PaginationCommentInfo paginationComment1 = new PaginationCommentInfo();
+				paginationComment1.setContent(commentConvert.toListModel(resuft));
+				paginationComment1.setTotalPages(totalPage);
+				paginationComment1.setTotalElements(resuft.size());
+				paginationComment1.setCurrentPage(current_page);
+
+				return paginationComment1;
+
+			} else {
+				return null;
 			}
-
-			Integer start = (current_page - 1) * limit;
-
-			System.out.println(courseId + ", " + start + ", " + limit);
-			List<Comment> resuft = commentRepository.findAllByCourseIdAndLimit(courseId, start, limit);
-
-			System.out.println(resuft);
-
-			return null;
-
-		} else {
-			return null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
+		return null;
 	}
 
 }

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.estudy.entities.Comment;
 import com.estudy.entities.ResponseObject;
 import com.estudy.form.CommentForm;
 import com.estudy.model.CommentInfo;
+import com.estudy.model.PaginationCommentInfo;
 import com.estudy.service.impl.CommentService;
 
 @RestController
@@ -29,20 +29,24 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 
-	// @PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{courseId}")
 	public ResponseEntity<ResponseObject> getAllOrPagination(@RequestParam(required = true) Boolean p,
 			@RequestParam(required = false, defaultValue = "1") Integer current_page,
 			@RequestParam(required = false, defaultValue = "10") Integer limit,
 			@RequestParam(required = false, defaultValue = "desc") String sort, @PathVariable Long courseId) {
-		if (p) {
 
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("true", "Da vao Comment",
-					commentService.getAllOrPagination(p, courseId, current_page, limit, sort)));
-		} else {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("true", "Da vao Comment", commentService.getAllOrPagination(p, courseId)));
+		try {
+			if (p) {
+				PaginationCommentInfo data = commentService.getAllOrPagination(p, courseId, current_page, limit, sort);
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("true", "Da vao Comment", data));
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
 		}
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseObject("true", "Da vao Comment", commentService.getAllOrPagination(p, courseId)));
 
 	}
 

@@ -1,6 +1,6 @@
 package com.estudy.entities;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,12 +14,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "roles")
 @Data
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
     public static final String AUTHOR_ADMIN = "ROLE_ADMIN";
     public static final String AUTHOR_USER = "USER";
     public static final String AUTHOR_INSTRUCTOR = "INSTRUCTOR";

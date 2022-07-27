@@ -2,6 +2,9 @@ package com.estudy.model;
 
 import java.util.Date;
 
+import com.estudy.entities.Course;
+import com.estudy.entities.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
