@@ -158,9 +158,9 @@ public class CommentService implements ICommentService {
 
 				PaginationCommentInfo paginationComment1 = new PaginationCommentInfo();
 				paginationComment1.setContent(commentConvert.toListModel(resuft));
-				paginationComment1.setTotalPages(1);
+				paginationComment1.setTotalPages(totalPage);
 				paginationComment1.setTotalElements(resuft.size());
-				paginationComment1.setCurrentPage(1);
+				paginationComment1.setCurrentPage(current_page);
 
 				return paginationComment1;
 
