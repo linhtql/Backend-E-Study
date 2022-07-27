@@ -37,7 +37,7 @@ public class JwtTokenProvider {
                 .getBody();
 
         return Long.parseLong(claims.getSubject());
-    }
+    }	
 
     public boolean validateToken(String authToken) {
         try {
