@@ -4,12 +4,14 @@ import com.estudy.utils.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
 @Slf4j
+@PropertySource("classpath:config.properties")
 public class JwtTokenProvider {
 
     @Value("${application.security.secret-key}")
@@ -35,7 +37,7 @@ public class JwtTokenProvider {
                 .getBody();
 
         return Long.parseLong(claims.getSubject());
-    }
+    }	
 
     public boolean validateToken(String authToken) {
         try {
