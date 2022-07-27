@@ -1,20 +1,30 @@
 package com.estudy.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntity{
-
+public class User extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
@@ -56,7 +66,7 @@ public class User extends BaseEntity{
     private boolean active = true;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", insertable=false, updatable=false)
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

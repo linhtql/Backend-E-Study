@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryForm {
-	private String name;
-	private MultipartFile avatar;
-	private String description;
+public class CommentForm {
+	private Long courseId;
+	private Long userId;
+	private String content;
+	private Double star;
 }
