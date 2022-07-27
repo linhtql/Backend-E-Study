@@ -59,7 +59,7 @@ public class UserService implements IUserService, UserDetailsService {
         userInfo.setEmail(user.getEmail());
         userInfo.setAddress(user.getAddress());
         userInfo.setAvatar(user.getAvatar());
-
+        userInfo.setRole(user.getRole().getName());
         return userInfo;
     }
 

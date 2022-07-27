@@ -1,7 +1,5 @@
 package com.estudy.controller;
 
-import java.net.http.HttpRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{courseId}")
 	public ResponseEntity<ResponseObject> getAllOrPagination(@RequestParam(required = true) Boolean p,
 			@RequestParam(required = false, defaultValue = "1") Integer current_page,

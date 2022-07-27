@@ -1,17 +1,11 @@
 package com.estudy.service.impl;
 
-import java.net.http.HttpRequest;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.estudy.convert.CommentConvert;
@@ -22,7 +16,6 @@ import com.estudy.jwt.JwtAuthenticationFilter;
 import com.estudy.jwt.JwtTokenProvider;
 import com.estudy.model.CommentInfo;
 import com.estudy.model.PaginationCommentInfo;
-import com.estudy.repository.CategoryRepository;
 import com.estudy.repository.CommentReponsitory;
 import com.estudy.repository.UserRepository;
 import com.estudy.service.ICommentService;
