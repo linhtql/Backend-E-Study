@@ -4,6 +4,8 @@ import java.net.http.HttpRequest;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ import com.estudy.service.ICommentService;
 
 @Service
 public class CommentService implements ICommentService {
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	UserRepository userRepository;
@@ -134,29 +139,38 @@ public class CommentService implements ICommentService {
 	@Override
 	public PaginationCommentInfo getAllOrPagination(Boolean p, Long courseId, Integer current_page, Integer limit,
 			String sort) {
-		if (p) {
-			PaginationCommentInfo paginationComment = new PaginationCommentInfo();
-			Integer total_record = commentRepository.countByCourseId(courseId);
-			Integer totalPage = (int) Math.ceil(total_record / limit);
+		try {
+			if (p) {
+				PaginationCommentInfo paginationComment = new PaginationCommentInfo();
+				Integer total_record = commentRepository.countByCourseId(courseId);
+				Integer totalPage = (int) Math.ceil(total_record / limit);
 
-			if (current_page > totalPage) {
-				current_page = totalPage;
-			} else if (current_page < 1) {
-				current_page = 1;
+				if (current_page > totalPage) {
+					current_page = totalPage;
+				} else if (current_page < 1) {
+					current_page = 1;
+				}
+
+				Integer start = (current_page - 1) * limit;
+
+				System.out.println(courseId + ", " + start + ", " + limit);
+				List<Comment> resuft = commentRepository.findAllByCourseIdParamsNative(courseId, start, limit);
+
+				PaginationCommentInfo paginationComment1 = new PaginationCommentInfo();
+				paginationComment1.setContent(commentConvert.toListModel(resuft));
+				paginationComment1.setTotalPages(1);
+				paginationComment1.setTotalElements(resuft.size());
+				paginationComment1.setCurrentPage(1);
+
+				return paginationComment1;
+
+			} else {
+				return null;
 			}
-
-			Integer start = (current_page - 1) * limit;
-
-			System.out.println(courseId + ", " + start + ", " + limit);
-			List<Comment> resuft = commentRepository.findAllByCourseIdAndLimit(courseId, start, limit);
-
-			System.out.println(resuft);
-
-			return null;
-
-		} else {
-			return null;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
+		return null;
 	}
 
 }
