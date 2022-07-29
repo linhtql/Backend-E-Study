@@ -41,10 +41,10 @@ public class Comment extends BaseEntity implements Serializable {
 	@Column(name = "star")
 	private double star;
 
-	@Column(name = "createdDate")
+	@Column(name = "created_date")
 	private Date createdDate;
 
-	@Column(name = "modifiedDate")
+	@Column(name = "modified_date")
 	private Date modifiedDate;
 
 }
