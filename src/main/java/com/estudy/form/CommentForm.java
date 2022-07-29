@@ -1,6 +1,6 @@
 package com.estudy.form;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.estudy.model.UserInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,4 +14,5 @@ public class CommentForm {
 	private Long userId;
 	private String content;
 	private Double star;
+
 }

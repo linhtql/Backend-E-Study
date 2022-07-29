@@ -18,5 +18,6 @@ public class CommentInfo {
 	private Long courseId;
 	private String content;
 	private Double start;
+	private UserInfo user;
 	private Date createAt;
 }

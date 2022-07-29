@@ -35,7 +35,7 @@ public class Comment extends BaseEntity implements Serializable {
 	@JoinColumn(name = "course_id", insertable = false, updatable = false, referencedColumnName = "id")
 	private Course course;
 
-	@Column(name = "content")
+	@Column(name = "content", columnDefinition = "TEXT")
 	private String content;
 
 	@Column(name = "star")
