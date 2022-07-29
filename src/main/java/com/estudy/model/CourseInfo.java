@@ -17,4 +17,5 @@ public class CourseInfo {
     private String imageUrl;
     private CategoryInfo category;
     private UserInfo instructor;
+    private int enrollNumber;
 }

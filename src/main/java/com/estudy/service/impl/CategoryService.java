@@ -63,7 +63,7 @@ public class CategoryService implements ICategoryService {
 			oldCateogry.setName(categoryForm.getName());
 			oldCateogry.setDescription(categoryForm.getDescription());
 			String avatar;
-			if (categoryForm.getAvatar().isEmpty()) {
+			if (categoryForm.getAvatar() == null || categoryForm.getAvatar().isEmpty()) {
 				avatar = oldCateogry.getAvatar();
 			} else {
 				avatar = storageService.storageFile(categoryForm.getAvatar());

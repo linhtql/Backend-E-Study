@@ -1,14 +1,7 @@
 package com.estudy.service;
 
-import java.net.http.HttpRequest;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.data.domain.Page;
-
-import com.estudy.entities.Comment;
-import com.estudy.form.CategoryForm;
 import com.estudy.form.CommentForm;
 import com.estudy.model.CommentInfo;
 import com.estudy.model.PaginationCommentInfo;

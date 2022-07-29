@@ -13,18 +13,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course extends BaseEntity{
-
+public class Course extends BaseEntity {
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "price")
     private double price;
-
 
     @Column(name = "sale_percent")
     private double sale_percent;
@@ -42,7 +40,7 @@ public class Course extends BaseEntity{
     private Long instructorId;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", insertable=false, updatable=false, referencedColumnName = "id")
+    @JoinColumn(name = "category_id", insertable = false, updatable = false, referencedColumnName = "id")
     private Category category;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
@@ -55,7 +53,7 @@ public class Course extends BaseEntity{
     private List<Enroll> enrolls;
 
     @ManyToOne
-    @JoinColumn(name = "instructor_id", insertable=false, updatable=false, referencedColumnName = "id")
+    @JoinColumn(name = "instructor_id", insertable = false, updatable = false, referencedColumnName = "id")
     private Instructor instructor;
 
     @Column(name = "createdDate")
@@ -63,6 +61,5 @@ public class Course extends BaseEntity{
 
     @Column(name = "modifiedDate")
     private Date modifiedDate;
-
 
 }

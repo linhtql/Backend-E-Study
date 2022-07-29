@@ -150,6 +150,7 @@ public class CourseService implements ICourseService {
         courseInfo.setPrice(course.getPrice());
         courseInfo.setSale_percent(course.getSale_percent());
         courseInfo.setShort_desc(course.getShort_desc());
+        courseInfo.setEnrollNumber(course.getEnrolls() != null ? course.getEnrolls().size() : 0);
         return courseInfo;
     }
 
