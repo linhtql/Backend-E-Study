@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -141,9 +142,10 @@ public class CommentService implements ICommentService {
 			String sort) {
 		try {
 			if (p) {
+
 				PaginationCommentInfo paginationComment = new PaginationCommentInfo();
 				Integer total_record = commentRepository.countByCourseId(courseId);
-				Integer totalPage = (int) Math.ceil(total_record / limit);
+				Integer totalPage = (int) Math.ceil(((double) total_record) / limit);
 
 				if (current_page > totalPage) {
 					current_page = totalPage;
@@ -153,7 +155,11 @@ public class CommentService implements ICommentService {
 
 				Integer start = (current_page - 1) * limit;
 
-				System.out.println(courseId + ", " + start + ", " + limit);
+				System.out.println(courseId + ", " + start + ", " + limit + ", " + sort.toUpperCase());
+
+				Sort sort_1 = sort.toUpperCase() == "DESC" ? Sort.by(Sort.Direction.DESC, "createdDate")
+						: Sort.by(Sort.Direction.ASC, "createdDate");
+
 				List<Comment> resuft = commentRepository.findAllByCourseIdParamsNative(courseId, start, limit);
 
 				PaginationCommentInfo paginationComment1 = new PaginationCommentInfo();

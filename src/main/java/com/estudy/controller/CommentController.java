@@ -39,14 +39,15 @@ public class CommentController {
 		try {
 			if (p) {
 				PaginationCommentInfo data = commentService.getAllOrPagination(p, courseId, current_page, limit, sort);
-				return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("true", "Da vao Comment", data));
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponseObject("true", "Get comment with paginatio", data));
 			}
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponseObject("true", "Da vao Comment", commentService.getAllOrPagination(p, courseId)));
+				.body(new ResponseObject("true", "Get all comment", commentService.getAllOrPagination(p, courseId)));
 
 	}
 

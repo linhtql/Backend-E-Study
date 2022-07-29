@@ -12,24 +12,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
-@EntityListeners({AuditingEntityListener.class})
+@EntityListeners({ AuditingEntityListener.class })
 @Data
 public abstract class BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@CreatedDate
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate;
 
-    @CreatedBy
-    private String createdBy;
+	@CreatedBy
+	private String createdBy;
 
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
+	@LastModifiedDate
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastModifiedDate;
 
-    @LastModifiedBy
-    private String lastModifiedBy;
+	@LastModifiedBy
+	private String lastModifiedBy;
 }
