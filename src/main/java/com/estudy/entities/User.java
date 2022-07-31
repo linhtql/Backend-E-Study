@@ -35,22 +35,26 @@ public class User extends BaseEntity {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = true)
     private String password;
 
+<<<<<<< Updated upstream
     @Column(name = "birthOfDate")
+=======
+    @Column(name = "birth_of_date", nullable = true)
+>>>>>>> Stashed changes
     private Date birthOfDate;
 
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = true)
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = true)
     private String address;
 
-    @Column(name = "avatar")
+    @Column(name = "avatar", nullable = true)
     private String avatar;
 
     @Column(name = "role_id")

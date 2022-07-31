@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.estudy.entities.User;
 import com.estudy.form.EditUserForm;
 import com.estudy.form.RegisterForm;
+import com.estudy.form.RegisterSocialForm;
 import com.estudy.model.UserInfo;
 
 public interface IUserService {
@@ -13,7 +14,11 @@ public interface IUserService {
 
     UserInfo getByUserName(String username);
 
+    UserInfo getByEmail(String email);
+
     UserInfo register(RegisterForm registerForm);
+
+    UserInfo registerSocial(RegisterSocialForm form);
 
     UserInfo information(long id);
 

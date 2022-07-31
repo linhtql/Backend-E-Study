@@ -13,6 +13,7 @@ import com.estudy.config.TimeConfig;
 import com.estudy.entities.User;
 import com.estudy.form.EditUserForm;
 import com.estudy.form.RegisterForm;
+import com.estudy.form.RegisterSocialForm;
 import com.estudy.model.UserInfo;
 import com.estudy.repository.UserRepository;
 import com.estudy.service.IUserService;
@@ -48,6 +49,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserInfo getByUserName(String username) {
         User user = userRepository.findByUsername(username);
+<<<<<<< Updated upstream
 
         UserInfo userInfo = new UserInfo();
         userInfo.setId(user.getId());
@@ -60,6 +62,9 @@ public class UserService implements IUserService, UserDetailsService {
         userInfo.setAddress(user.getAddress());
         userInfo.setAvatar(user.getAvatar());
 
+=======
+        UserInfo userInfo = convertToUserInfo(user);
+>>>>>>> Stashed changes
         return userInfo;
     }
 
@@ -103,18 +108,8 @@ public class UserService implements IUserService, UserDetailsService {
         if (user == null) {
             return null;
         } else {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setId(user.getId());
-            userInfo.setFirstName(user.getFirstName());
-            userInfo.setLastName(user.getLastName());
-            userInfo.setBirthOfDate(user.getBirthOfDate());
-            userInfo.setPhone(user.getPhone());
-            userInfo.setUsername(user.getUsername());
-            userInfo.setEmail(user.getEmail());
-            userInfo.setAddress(user.getAddress());
-            userInfo.setAvatar(user.getAvatar());
+            UserInfo userInfo = convertToUserInfo(user);
             userInfo.setDateCreated(TimeConfig.getTime(user.getCreatedDate()));
-
             return userInfo;
 
         }
@@ -130,7 +125,8 @@ public class UserService implements IUserService, UserDetailsService {
             oldUser.setLastName(registerForm.getLastName());
             oldUser.setBirthOfDate(registerForm.getBirthOfDate());
             oldUser.setPhone(registerForm.getPhone());
-            oldUser.setEmail(registerForm.getEmail());
+            // not allow update email
+            // oldUser.setEmail(registerForm.getEmail());
             oldUser.setAddress(registerForm.getAddress());
 
             String avatar;
@@ -178,6 +174,31 @@ public class UserService implements IUserService, UserDetailsService {
         userInfo.setEmail(user.getEmail());
         userInfo.setAddress(user.getAddress());
         userInfo.setAvatar(user.getAvatar());
+        userInfo.setRole(user.getRole() != null ? user.getRole().getName() : "ROLE_USER");
+        return userInfo;
+    }
+
+    @Override
+    public UserInfo getByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return null;
+        }
+        return convertToUserInfo(user);
+    }
+
+    @Override
+    public UserInfo registerSocial(RegisterSocialForm form) {
+        User user = new User();
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        user.setUsername(form.getId());
+        user.setEmail(form.getEmail());
+        user.setAvatar(form.getPicture());
+        user.setCreatedDate(new Date());
+        user.setActive(true);
+        User _user = userRepository.save(user);
+        UserInfo userInfo = information(_user.getId());
         return userInfo;
     }
 
