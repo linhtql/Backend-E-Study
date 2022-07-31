@@ -38,11 +38,7 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = true)
     private String password;
 
-<<<<<<< Updated upstream
     @Column(name = "birthOfDate")
-=======
-    @Column(name = "birth_of_date", nullable = true)
->>>>>>> Stashed changes
     private Date birthOfDate;
 
     @Column(name = "phone", nullable = true)

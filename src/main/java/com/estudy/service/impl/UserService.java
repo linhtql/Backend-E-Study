@@ -49,22 +49,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserInfo getByUserName(String username) {
         User user = userRepository.findByUsername(username);
-<<<<<<< Updated upstream
-
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(user.getId());
-        userInfo.setFirstName(user.getFirstName());
-        userInfo.setLastName(user.getLastName());
-        userInfo.setUsername(user.getUsername());
-        userInfo.setBirthOfDate(user.getBirthOfDate());
-        userInfo.setPhone(user.getPhone());
-        userInfo.setEmail(user.getEmail());
-        userInfo.setAddress(user.getAddress());
-        userInfo.setAvatar(user.getAvatar());
-
-=======
         UserInfo userInfo = convertToUserInfo(user);
->>>>>>> Stashed changes
         return userInfo;
     }
 
