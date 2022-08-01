@@ -1,4 +1,6 @@
-Requiriment : 
+Back-End 
+
+Requirement : 
 - JDK 8
 - Maven Project
 - Mysql
@@ -6,9 +8,15 @@ Requiriment :
 Libary :
 - Spring Web
 - Spring JPA
-- Hibernate
+- Spring Security
+- Cloudinary
+- JWT
 
 Use :
 1) Clone project
-2) Change username and password in application.properties/resources
+2) Change username and password database in application.properties/resources
 3) Start project 
+
+
+
+Front-End : https://frontend-e-study.vercel.app/
