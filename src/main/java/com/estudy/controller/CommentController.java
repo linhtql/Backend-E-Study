@@ -1,7 +1,5 @@
 package com.estudy.controller;
 
-import java.net.http.HttpRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.estudy.entities.Comment;
 import com.estudy.entities.ResponseObject;
 import com.estudy.form.CommentForm;
 import com.estudy.model.CommentInfo;
+import com.estudy.model.PaginationCommentInfo;
 import com.estudy.service.impl.CommentService;
 
 @RestController
@@ -31,23 +29,28 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{courseId}")
 	public ResponseEntity<ResponseObject> getAllOrPagination(@RequestParam(required = true) Boolean p,
 			@RequestParam(required = false, defaultValue = "1") Integer current_page,
 			@RequestParam(required = false, defaultValue = "10") Integer limit,
 			@RequestParam(required = false, defaultValue = "desc") String sort, @PathVariable Long courseId) {
-		if (p) {
 
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("true", "Da vao Comment",
-					commentService.getAllOrPagination(p, courseId, current_page, limit, sort)));
-		} else {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseObject("true", "Da vao Comment", commentService.getAllOrPagination(p, courseId)));
+		try {
+			if (p) {
+				PaginationCommentInfo data = commentService.getAllOrPagination(p, courseId, current_page, limit, sort);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponseObject("true", "Get comment with paginatio", data));
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
 		}
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseObject("true", "Get all comment", commentService.getAllOrPagination(p, courseId)));
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<ResponseObject> create(@ModelAttribute CommentForm commentForm, HttpServletRequest req) {
 
@@ -63,6 +66,7 @@ public class CommentController {
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<ResponseObject> update(@ModelAttribute CommentForm commentForm, @PathVariable Long id) {
 		CommentInfo commentInfo = commentService.update(commentForm, id);
@@ -76,6 +80,7 @@ public class CommentController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ResponseObject> delete(@PathVariable Long id) {
 		CommentInfo commentInfo = commentService.delete(id);
