@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name = "birthOfDate")
+    @Column(name = "birth_of_date")
     private Date birthOfDate;
 
     @Column(name = "phone", nullable = true)
@@ -56,10 +56,10 @@ public class User extends BaseEntity {
     @Column(name = "role_id")
     private Long roleId = 1L;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private Date createdDate;
 
-    @Column(name = "modifiedDate")
+    @Column(name = "modified_date")
     private Date modifiedDate;
 
     @Column(name = "active")
