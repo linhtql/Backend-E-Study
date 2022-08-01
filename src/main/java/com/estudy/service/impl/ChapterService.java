@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.estudy.convert.ChapterConvert;
-import com.estudy.convert.LessionConvert;
+import com.estudy.convert.LessonConvert;
 import com.estudy.entities.Chapter;
 import com.estudy.form.ChapterForm;
 import com.estudy.model.ChapterInfo;
@@ -25,7 +25,7 @@ public class ChapterService implements IChapterService {
 	ChapterConvert chapterConvert;
 
 	@Autowired
-	LessionConvert lessionConvert;
+	LessonConvert lessionConvert;
 
 	@Override
 	public ChapterInfo create(ChapterForm chapterForm) {

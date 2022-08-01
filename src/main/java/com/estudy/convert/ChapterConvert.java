@@ -15,7 +15,7 @@ import com.estudy.model.ChapterInfo;
 public class ChapterConvert {
 
 	@Autowired
-	LessionConvert lessionConvert;
+	LessonConvert lessionConvert;
 
 	public Chapter toEntity(ChapterForm chapterForm) {
 		Chapter chapter = new Chapter();

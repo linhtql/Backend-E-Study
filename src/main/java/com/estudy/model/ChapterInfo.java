@@ -17,6 +17,6 @@ public class ChapterInfo {
 	private String name;
 	private String description;
 	private Long course_id;
-	private List<LessionInfor> list_lession;
+	private List<LessonInfor> list_lession;
 	private Date createAt;
 }
