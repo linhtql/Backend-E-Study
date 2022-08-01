@@ -29,7 +29,6 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{courseId}")
 	public ResponseEntity<ResponseObject> getAllOrPagination(@RequestParam(required = true) Boolean p,
 			@RequestParam(required = false, defaultValue = "1") Integer current_page,
@@ -51,6 +50,7 @@ public class CommentController {
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<ResponseObject> create(@ModelAttribute CommentForm commentForm, HttpServletRequest req) {
 
@@ -66,6 +66,7 @@ public class CommentController {
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<ResponseObject> update(@ModelAttribute CommentForm commentForm, @PathVariable Long id) {
 		CommentInfo commentInfo = commentService.update(commentForm, id);
@@ -79,6 +80,7 @@ public class CommentController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ResponseObject> delete(@PathVariable Long id) {
 		CommentInfo commentInfo = commentService.delete(id);
