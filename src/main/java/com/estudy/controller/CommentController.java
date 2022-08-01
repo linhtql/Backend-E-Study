@@ -29,7 +29,6 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{courseId}")
 	public ResponseEntity<ResponseObject> getAllOrPagination(@RequestParam(required = true) Boolean p,
 			@RequestParam(required = false, defaultValue = "1") Integer current_page,
