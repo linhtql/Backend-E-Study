@@ -14,4 +14,6 @@ public interface IUserService {
     UserInfo information(long id);
     UserInfo updateUser(RegisterForm registerForm, Long id);
     UserInfo editUser(EditUserForm editUserForm, Long id);
+    
+    Boolean createMail(long id);
 }

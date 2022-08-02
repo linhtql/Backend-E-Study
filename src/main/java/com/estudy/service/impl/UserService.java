@@ -1,13 +1,11 @@
 package com.estudy.service.impl;
 
-import com.estudy.config.TimeConfig;
-import com.estudy.entities.User;
-import com.estudy.form.EditUserForm;
-import com.estudy.form.RegisterForm;
-import com.estudy.model.UserInfo;
-import com.estudy.repository.UserRepository;
-import com.estudy.service.IUserService;
-import com.estudy.utils.CustomUserDetails;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +13,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import com.estudy.config.TimeConfig;
+import com.estudy.entities.User;
+import com.estudy.form.EditUserForm;
+import com.estudy.form.RegisterForm;
+import com.estudy.model.DataMail;
+import com.estudy.model.UserInfo;
+import com.estudy.repository.UserRepository;
+import com.estudy.service.IUserService;
+import com.estudy.utils.CustomUserDetails;
 
 
 @Service
@@ -29,6 +35,9 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Autowired
     StorageService storageService;
+    
+    @Autowired
+    private MailService mailService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -171,6 +180,31 @@ public class UserService implements IUserService, UserDetailsService {
             return userInfo;
         }
         return null;
+    }
+
+
+    @Override
+    public Boolean createMail(long id) {
+        try {
+        	User user = userRepository.findById(id);
+        	
+            DataMail dataMail = new DataMail();
+
+            dataMail.setTo(user.getEmail());
+            dataMail.setSubject("Mail");
+
+            Map<String, Object> props = new HashMap<>();
+            props.put("firstname", user.getFirstName());
+            props.put("lastname", user.getLastName());
+            props.put("username", user.getUsername());
+            dataMail.setProps(props);
+
+            mailService.sendHtmlMail(dataMail, "abc");
+            return true;
+        } catch (MessagingException exp){
+            exp.printStackTrace();
+        }
+        return false;
     }
 
 
