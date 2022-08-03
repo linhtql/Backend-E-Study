@@ -37,7 +37,7 @@ public class CommentConvert {
 		commentInfo1.setCreateAt(comment.getCreatedDate());
 		commentInfo1.setCourseId(comment.getCourseId());
 		commentInfo1.setUserId(comment.getUserId());
-		commentInfo1.setUser(userService.convertToUserInfo(comment.getUser()));
+		commentInfo1.setUser(comment.getUser() != null ? userService.convertToUserInfo(comment.getUser()) : null);
 
 		return commentInfo1;
 	}
