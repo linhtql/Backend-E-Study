@@ -1,5 +1,7 @@
 package com.estudy.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,6 @@ public class CourseInfo {
     private String short_desc;
     private String imageUrl;
     private CategoryInfo category;
+    private List<ChapterInfo> chapters;
     private UserInfo instructor;
 }

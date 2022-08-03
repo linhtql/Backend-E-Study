@@ -19,4 +19,5 @@ public class CommentInfo {
 	private String content;
 	private Double start;
 	private Date createAt;
+	private UserInfo user;
 }

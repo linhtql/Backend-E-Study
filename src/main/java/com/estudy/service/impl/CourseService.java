@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.estudy.convert.ChapterConvert;
+import com.estudy.convert.LessionConvert;
 import com.estudy.entities.Category;
 import com.estudy.entities.Course;
 import com.estudy.entities.Instructor;
@@ -35,7 +37,8 @@ public class CourseService implements ICourseService {
     CourseRepository courseRepository;
     @Autowired
     InstructorRepository instructorRepository;
-
+    @Autowired
+    ChapterConvert chapterConvert;
     @Autowired
     IStorageService iStorageService;
 
@@ -101,7 +104,9 @@ public class CourseService implements ICourseService {
         UserInfo userInfo = iUserService.convertToUserInfo(course.getInstructor().getUser());
         course.getInstructor().setUser(mapper.map(userInfo, User.class));
 
-        return this.convertToCourseInfo(course);
+        CourseInfo courseInfo = this.convertToCourseInfo(course);
+        courseInfo.setChapters(chapterConvert.toListModel(course.getChapters()));
+        return courseInfo;
     }
 
     @Override

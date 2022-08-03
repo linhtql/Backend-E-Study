@@ -3,14 +3,19 @@ package com.estudy.convert;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.estudy.entities.Comment;
 import com.estudy.form.CommentForm;
 import com.estudy.model.CommentInfo;
+import com.estudy.service.IUserService;
 
 @Component
 public class CommentConvert {
+	@Autowired
+	IUserService userService;
+
 	public Comment toEntity(CommentForm commentForm) {
 		Comment commentEntity = new Comment();
 
@@ -32,6 +37,7 @@ public class CommentConvert {
 		commentInfo1.setCreateAt(comment.getCreatedDate());
 		commentInfo1.setCourseId(comment.getCourseId());
 		commentInfo1.setUserId(comment.getUserId());
+		commentInfo1.setUser(userService.convertToUserInfo(comment.getUser()));
 
 		return commentInfo1;
 	}

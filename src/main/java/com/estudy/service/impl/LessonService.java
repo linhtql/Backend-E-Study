@@ -56,11 +56,13 @@ public class LessonService implements ILessonService {
 			Lesson lessonOld = lessonRepository.findOneById(id);
 			if (lessonOld != null) {
 				Lesson lesson1 = lessonConvert.toEntity(lessonOld, lessonForm);
-				if (lessonForm.getAttachment().isEmpty()) {
+				if (lessonForm.getAttachment() == null || lessonForm.getAttachment().isEmpty()) {
 					lesson1.setAttachment(lesson1.getAttachment());
 				} else {
 					lesson1.setAttachment(storageService.storageFile(lessonForm.getAttachment()));
 				}
+				lesson1.setContent(lessonForm.getContent());
+				lesson1.setName(lessonForm.getName());
 
 				lesson1 = lessonRepository.save(lesson1);
 

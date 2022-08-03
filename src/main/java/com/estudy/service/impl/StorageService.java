@@ -3,6 +3,7 @@ package com.estudy.service.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,7 +26,9 @@ public class StorageService implements IStorageService {
     public String storageFile(MultipartFile file) {
         try {
             File uploadedFile = convertMultiPartToFile(file);
-            Map uploadResult = cloudinary.uploader().uploadLarge(uploadedFile, ObjectUtils.emptyMap());
+            Map<String, String> uploadParams = new HashMap<>();
+            uploadParams.put("resource_type", "auto");
+            Map uploadResult = cloudinary.uploader().uploadLarge(uploadedFile, uploadParams);
             boolean isDeleted = uploadedFile.delete();
             if (isDeleted) {
                 System.out.println("File successfully deleted");

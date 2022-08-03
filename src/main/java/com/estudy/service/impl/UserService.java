@@ -10,11 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.estudy.config.TimeConfig;
+import com.estudy.entities.Instructor;
 import com.estudy.entities.User;
 import com.estudy.form.EditUserForm;
 import com.estudy.form.RegisterForm;
 import com.estudy.form.RegisterSocialForm;
 import com.estudy.model.UserInfo;
+import com.estudy.repository.InstructorRepository;
 import com.estudy.repository.UserRepository;
 import com.estudy.service.IUserService;
 import com.estudy.utils.CustomUserDetails;
@@ -24,6 +26,9 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    InstructorRepository instructorRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -56,6 +61,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserInfo register(RegisterForm registerForm) {
         User user1 = userRepository.findByUsername(registerForm.getUsername());
+        Instructor instructor = new Instructor();
         if (user1 == null) {
             System.out.println("da vao null");
             user1 = new User();
@@ -68,7 +74,7 @@ public class UserService implements IUserService, UserDetailsService {
             user1.setEmail(registerForm.getEmail());
             user1.setAddress(registerForm.getAddress());
             String avatar;
-            if (registerForm.getAvatar().isEmpty()) {
+            if (registerForm.getAvatar() == null || registerForm.getAvatar().isEmpty()) {
                 avatar = "https://res.cloudinary.com/dxultkptn/image/upload/v1658150890/default_nbaeby.jpg";
             } else {
                 avatar = storageService.storageFile(registerForm.getAvatar());
@@ -77,6 +83,8 @@ public class UserService implements IUserService, UserDetailsService {
             user1.setCreatedDate(new Date());
 
             User user = userRepository.save(user1);
+            instructor.setUserId(user.getId());
+            instructorRepository.save(instructor);
             UserInfo userInfo = information(user.getId());
 
             return userInfo;
@@ -175,6 +183,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public UserInfo registerSocial(RegisterSocialForm form) {
         User user = new User();
+        Instructor instructor = new Instructor();
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
         user.setUsername(form.getId());
@@ -183,6 +192,8 @@ public class UserService implements IUserService, UserDetailsService {
         user.setCreatedDate(new Date());
         user.setActive(true);
         User _user = userRepository.save(user);
+        instructor.setUserId(_user.getId());
+        instructorRepository.save(instructor);
         UserInfo userInfo = information(_user.getId());
         return userInfo;
     }
