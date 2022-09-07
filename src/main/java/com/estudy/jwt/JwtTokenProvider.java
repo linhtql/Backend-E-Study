@@ -15,12 +15,12 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     @Value("${application.security.secret-key}")
-    private  String jwt_secret ;
-    private final long JWT_EXPIRATION = 6*30*24*60*60*100L;
+    private String jwt_secret;
+    private final long JWT_EXPIRATION = 6 * 30 * 24 * 60 * 60 * 100L;
 
     public String generateToken(CustomUserDetails customUserDetails) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime()+JWT_EXPIRATION);
+        Date expiration = new Date(now.getTime() + JWT_EXPIRATION);
 
         return Jwts.builder()
                 .setSubject(Long.toString(customUserDetails.getUser().getId()))
@@ -30,7 +30,19 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Long getUserIdFromJWT(String token){
+    public String generateTokenById(Long id) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + JWT_EXPIRATION);
+
+        return Jwts.builder()
+                .setSubject(Long.toString(id))
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS512, jwt_secret)
+                .compact();
+    }
+
+    public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwt_secret)
                 .parseClaimsJws(token)
@@ -54,5 +66,4 @@ public class JwtTokenProvider {
         }
         return false;
     }
-    }
-
+}

@@ -1,20 +1,30 @@
 package com.estudy.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntity{
-
+public class User extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
@@ -25,38 +35,38 @@ public class User extends BaseEntity{
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name = "birthOfDate")
+    @Column(name = "birth_of_date")
     private Date birthOfDate;
 
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = true)
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = true)
     private String address;
 
-    @Column(name = "avatar")
+    @Column(name = "avatar", nullable = true)
     private String avatar;
 
     @Column(name = "role_id")
     private Long roleId = 1L;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private Date createdDate;
 
-    @Column(name = "modifiedDate")
+    @Column(name = "modified_date")
     private Date modifiedDate;
 
     @Column(name = "active")
     private boolean active = true;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", insertable=false, updatable=false)
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

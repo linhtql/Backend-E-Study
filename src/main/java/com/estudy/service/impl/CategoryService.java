@@ -32,7 +32,7 @@ public class CategoryService implements ICategoryService {
 			category1.setName(categoryForm.getName());
 			category1.setDescription(categoryForm.getDescription());
 			String avatar;
-			if (categoryForm.getAvatar().isEmpty()) {
+			if (categoryForm.getAvatar() == null || categoryForm.getAvatar().isEmpty()) {
 				avatar = "https://res.cloudinary.com/dxultkptn/image/upload/v1658150890/default_nbaeby.jpg";
 			} else {
 				avatar = storageService.storageFile(categoryForm.getAvatar());
@@ -63,7 +63,7 @@ public class CategoryService implements ICategoryService {
 			oldCateogry.setName(categoryForm.getName());
 			oldCateogry.setDescription(categoryForm.getDescription());
 			String avatar;
-			if (categoryForm.getAvatar().isEmpty()) {
+			if (categoryForm.getAvatar() == null || categoryForm.getAvatar().isEmpty()) {
 				avatar = oldCateogry.getAvatar();
 			} else {
 				avatar = storageService.storageFile(categoryForm.getAvatar());

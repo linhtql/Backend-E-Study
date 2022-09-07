@@ -7,10 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryForm {
+@AllArgsConstructor
+public class LessonForm {
 	private String name;
-	private MultipartFile avatar;
-	private String description;
+	private String content;
+	private MultipartFile attachment;
+	private Long chapter_id;
 }

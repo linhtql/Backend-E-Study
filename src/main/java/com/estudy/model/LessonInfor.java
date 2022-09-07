@@ -2,22 +2,18 @@ package com.estudy.model;
 
 import java.util.Date;
 
-import com.estudy.entities.Course;
-import com.estudy.entities.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CommentInfo {
+@AllArgsConstructor
+public class LessonInfor {
 	private Long id;
-	private Long userId;
-	private Long courseId;
+	private String name;
 	private String content;
-	private Double start;
+	private String attachment;
+	private Long chapter_id;
 	private Date createAt;
-	private UserInfo user;
 }

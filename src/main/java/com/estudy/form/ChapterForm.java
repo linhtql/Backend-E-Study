@@ -1,16 +1,14 @@
 package com.estudy.form;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryForm {
+@AllArgsConstructor
+public class ChapterForm {
 	private String name;
-	private MultipartFile avatar;
 	private String description;
+	private Long course_id;
 }
