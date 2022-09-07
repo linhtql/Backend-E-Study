@@ -16,6 +16,9 @@ public class CommentConvert {
 	@Autowired
 	IUserService userService;
 
+
+@Component
+public class CommentConvert {
 	public Comment toEntity(CommentForm commentForm) {
 		Comment commentEntity = new Comment();
 

@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +179,29 @@ public class CommentService implements ICommentService {
 			System.out.println(e.getMessage());
 		}
 		return null;
+		if (p) {
+			PaginationCommentInfo paginationComment = new PaginationCommentInfo();
+			Integer total_record = commentRepository.countByCourseId(courseId);
+			Integer totalPage = (int) Math.ceil(total_record / limit);
+
+			if (current_page > totalPage) {
+				current_page = totalPage;
+			} else if (current_page < 1) {
+				current_page = 1;
+			}
+
+			Integer start = (current_page - 1) * limit;
+
+			System.out.println(courseId + ", " + start + ", " + limit);
+			List<Comment> resuft = commentRepository.findAllByCourseIdAndLimit(courseId, start, limit);
+
+			System.out.println(resuft);
+
+			return null;
+
+		} else {
+			return null;
+		}
 	}
 
 }

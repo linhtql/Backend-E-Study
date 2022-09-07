@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.estudy.entities.Comment;
 
 @Repository
+
+@Transactional
 public interface CommentReponsitory extends JpaRepository<Comment, Long> {
 	Comment findOneById(Long id);
 
@@ -22,8 +24,9 @@ public interface CommentReponsitory extends JpaRepository<Comment, Long> {
 
 	Integer countByCourseId(Long id);
 
-	//
 	@Query(nativeQuery = true, value = "SELECT * FROM comments c WHERE c.course_id=:courseId LIMIT :start, :limit")
 	List<Comment> findAllByCourseIdParamsNative(Long courseId, Integer start, Integer limit);
+	@Query("SELECT c FROM Comment c")
+	List<Comment> findAllByCourseIdAndLimit(Long courseId, Integer start, Integer limit);
 
 }
